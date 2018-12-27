@@ -15,34 +15,6 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use Xinmoy\Lib\Log;
 use Xinmoy\Register\Register;
 use Xinmoy\Server\Server;
-use Xinmoy\Server\HttpServer;
-
-
-/**
- * Autoload.
- *
- * @param string $class class
- */
-function autoload($class) {
-    $class = explode('\\', $class);
-    $classname = array_pop($class);
-    $namespace = join('\\', $class);
-    if (!preg_match('/^.+(Service|Config|Error|Lang)$/', $classname)) {
-        return false;
-    }
-
-    $code = "
-        namespace {$namespace};
-
-
-        use Xinmoy\\Client\\Proxy;
-
-
-        class {$classname} extends Proxy { }
-    ";
-    eval($code);
-    return true;
-}
 
 
 /**
@@ -89,16 +61,12 @@ function start_server($config) {
         throw new Exception('wrong config');
     }
 
-    if (empty($config['server']['name']) || empty($config['server']['host']) || !isset($config['server']['port']) || ($config['server']['port'] < 0)) {
-        throw new Exception('wrong name/host/port');
+    if (empty($config['server']['host']) || !isset($config['server']['port']) || ($config['server']['port'] < 0)) {
+        throw new Exception('wrong host/port');
     }
 
     if (empty($config['register']['host']) || !isset($config['register']['port']) || ($config['register']['port'] < 0)) {
         throw new Exception('wrong register host/port');
-    }
-
-    if (!isset($config['server']['dependencies'])) {
-        $config['server']['dependencies'] = [];
     }
 
     // Databases
@@ -133,9 +101,7 @@ function start_server($config) {
 
     // Start server.
     $server = new Server($config['server']['host'], $config['server']['port']);
-    $server->setName($config['server']['name']);
     $server->setRegisterAddress($config['register']['host'], $config['register']['port']);
-    $server->setDependencies($config['server']['dependencies']);
     $server->setMySQLMaster($databases['master']);
     $server->setMySQLSlaves($databases['slaves']);
     $server->setRedisMaster($caches['master']);
@@ -143,38 +109,6 @@ function start_server($config) {
     $server->start();
 }
 
-
-/**
- * Start http server.
- *
- * @param array $config config
- */
-function start_http_server($config) {
-    if (empty($config)) {
-        throw new Exception('wrong config');
-    }
-
-    if (empty($config['http_server']['host']) || !isset($config['http_server']['port']) || ($config['http_server']['port'] < 0)) {
-        throw new Exception('wrong host/port');
-    }
-
-    if (empty($config['register']['host']) || !isset($config['register']['port']) || ($config['register']['port'] < 0)) {
-        throw new Exception('wrong register host/port');
-    }
-
-    if (!isset($config['http_server']['dependencies'])) {
-        $config['http_server']['dependencies'] = [];
-    }
-
-    $server = new HttpServer($config['http_server']['host'], $config['http_server']['port']);
-    $server->setRegisterAddress($config['register']['host'], $config['register']['port']);
-    $server->setDependencies($config['http_server']['dependencies']);
-    $server->start();
-}
-
-
-// Register autoload.
-spl_autoload_register('autoload');
 
 // Set exception handler.
 set_exception_handler('handle_exception');
