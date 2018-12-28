@@ -14,6 +14,7 @@ namespace Xinmoy\Server;
 
 use Xinmoy\Swoole\Server as SwooleServer;
 use Xinmoy\Client\Register;
+use Xinmoy\Client\Registration;
 use Xinmoy\Client\MySQL;
 use Xinmoy\Client\Redis;
 
@@ -22,13 +23,14 @@ use Xinmoy\Client\Redis;
  * Server
  */
 class Server extends SwooleServer {
-    use Register, MySQL, Redis;
+    use Register, Registration, MySQL, Redis;
 
 
     /**
      * Start.
      */
     public function start() {
+        $this->_addRegistrationProcess();
         $this->_addMySQLConnections();
         $this->_addRedisConnections();
 
