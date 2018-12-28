@@ -12,13 +12,19 @@
 namespace Xinmoy\Client;
 
 
-use Swoole\Process;
+use Swoole\Process as SwooleProcess;
+use Swoole\Event;
+
+use Xinmoy\Swoole\Process;
 
 
 /**
  * Registration
  */
 trait Registration {
+    use Process;
+
+
     /*
      * Add registration process.
      */
@@ -27,7 +33,8 @@ trait Registration {
             throw new Exception('init failed');
         }
 
-        $process = new Process([ $this, 'onRegistrationProcessAdd' ]);
+        $process = new SwooleProcess([ $this, 'onRegistrationProcessAdd' ]);
+        $this->setProcess($process);
         $this->_server->addProcess($process);
     }
 
@@ -44,7 +51,33 @@ trait Registration {
             }
 
             $client = new RegistrationClient($this->_registerHost, $this->_registerPort);
+            $client->setProcess($process);
             $client->connect();
+        } catch (Exception $e) {
+            handle_exception($e);
+        }
+    }
+
+
+    /**
+     * onWorkerStart
+     *
+     * @param Server $server    server
+     * @param int    $worker_id worker id
+     */
+    public function onWorkerStart($server, $worker_id) {
+        try {
+            parent::onWorkerStart($server, $worker_id);
+
+            if ($worker_id != 0) {
+                return;
+            }
+
+            if (empty($this->_process)) {
+                throw new Exception('process init failed');
+            }
+
+            Event::add($this->_process->pipe, [ $this, 'onRead' ]);
         } catch (Exception $e) {
             handle_exception($e);
         }

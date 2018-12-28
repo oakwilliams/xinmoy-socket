@@ -13,10 +13,12 @@ namespace Xinmoy\Client;
 
 
 use Xinmoy\Swoole\AsyncClient;
+use Xinmoy\Swoole\Process;
 
 
 /**
  * Registration Client
  */
 class RegistrationClient extends AsyncClient {
+    use Process;
 }
