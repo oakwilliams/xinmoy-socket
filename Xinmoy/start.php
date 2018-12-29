@@ -14,7 +14,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use Xinmoy\Lib\Log;
 use Xinmoy\Register\Register;
-use Xinmoy\Server\Server;
+use App\Server;
 
 
 /**

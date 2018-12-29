@@ -45,4 +45,33 @@ class RegistrationClient extends AsyncClient {
             handle_exception($e);
         }
     }
+
+
+    /**
+     * onSendToGroup
+     *
+     * @param Client $client client
+     * @param array  $data   optional, data
+     */
+    public function onSendToGroup($client, $data = null) {
+        if (empty($data['group']) || empty($data['type'])) {
+            throw new Exception('wrong group/type');
+        }
+
+        $this->write('sendtogroupbyregister', $data);
+    }
+
+
+    /**
+     * onSendToGroupByRegister
+     *
+     * @param array $data optional, data
+     */
+    public function onSendToGroupByRegister($data = null) {
+        if (empty($data['group']) || empty($data['type'])) {
+            throw new Exception('wrong group/type');
+        }
+
+        $this->send('sendtogroup', $data);
+    }
 }

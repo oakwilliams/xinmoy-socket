@@ -84,4 +84,42 @@ trait Registration {
             handle_exception($e);
         }
     }
+
+
+    /**
+     * Send to group.
+     *
+     * @param string $group group
+     * @param string $type  type
+     * @param array  $data  optional, data
+     */
+    public function sendToGroup($group, $type, $data = null) {
+        if (empty($group) || empty($type)) {
+            throw new Exception('wrong group/type');
+        }
+
+        $this->write('sendtogroupbyregister', [
+            'group' => $group,
+            'type' => $type,
+            'data' => $data
+        ]);
+    }
+
+
+    /**
+     * onSendToGroupByRegister
+     *
+     * @param array $data optional, data
+     */
+    public function onSendToGroupByRegister($data = null) {
+        if (empty($data['group']) || empty($data['type'])) {
+            throw new Exception('wrong group/type');
+        }
+
+        if (!isset($data['data'])) {
+            $data['data'] = null;
+        }
+
+        parent::sendToGroup($data['group'], $data['type'], $data['data']);
+    }
 }

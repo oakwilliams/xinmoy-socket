@@ -12,6 +12,8 @@
 namespace Xinmoy\Register;
 
 
+use Exception;
+
 use Xinmoy\Swoole\Server;
 
 
@@ -19,4 +21,19 @@ use Xinmoy\Swoole\Server;
  * Register
  */
 class Register extends Server {
+    /**
+     * onSendToGroup
+     *
+     * @param Server $server     server
+     * @param int    $fd         fd
+     * @param int    $reactor_id reactor id
+     * @param object $data       data
+     */
+    public function onSendToGroup($server, $fd, $reactor_id, $data) {
+        if (empty($data['group']) || empty($data['type'])) {
+            throw new Exception('wrong group/type');
+        }
+
+        $this->sendToAll('sendtogroup', $data);
+    }
 }
