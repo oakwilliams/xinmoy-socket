@@ -12,6 +12,10 @@
 namespace Xinmoy\Client;
 
 
+use Exception;
+
+use Swoole\Event;
+
 use Xinmoy\Swoole\AsyncClient;
 use Xinmoy\Swoole\Process;
 
@@ -21,4 +25,24 @@ use Xinmoy\Swoole\Process;
  */
 class RegistrationClient extends AsyncClient {
     use Process;
+
+
+    /**
+     * onConnect
+     *
+     * @param Client $client client
+     */
+    public function onConnect($client) {
+        try {
+            parent::onConnect($client);
+
+            if (empty($this->_process)) {
+                throw new Exception('process init failed');
+            }
+
+            Event::add($this->_process->pipe, [ $this, 'onRead' ]);
+        } catch (Exception $e) {
+            handle_exception($e);
+        }
+    }
 }
