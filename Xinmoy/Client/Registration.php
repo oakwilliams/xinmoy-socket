@@ -109,9 +109,9 @@ trait Registration {
     /**
      * onSendToGroupByRegister
      *
-     * @param array $data optional, data
+     * @param array $data data
      */
-    public function onSendToGroupByRegister($data = null) {
+    public function onSendToGroupByRegister($data) {
         if (empty($data['group']) || empty($data['type'])) {
             throw new Exception('wrong group/type');
         }

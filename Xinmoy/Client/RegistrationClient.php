@@ -51,9 +51,9 @@ class RegistrationClient extends AsyncClient {
      * onSendToGroup
      *
      * @param Client $client client
-     * @param array  $data   optional, data
+     * @param array  $data   data
      */
-    public function onSendToGroup($client, $data = null) {
+    public function onSendToGroup($client, $data) {
         if (empty($data['group']) || empty($data['type'])) {
             throw new Exception('wrong group/type');
         }
@@ -65,9 +65,9 @@ class RegistrationClient extends AsyncClient {
     /**
      * onSendToGroupByRegister
      *
-     * @param array $data optional, data
+     * @param array $data data
      */
-    public function onSendToGroupByRegister($data = null) {
+    public function onSendToGroupByRegister($data) {
         if (empty($data['group']) || empty($data['type'])) {
             throw new Exception('wrong group/type');
         }
