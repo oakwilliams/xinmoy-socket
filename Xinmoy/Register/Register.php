@@ -36,4 +36,21 @@ class Register extends Server {
 
         $this->sendToAll('sendtogroup', $data);
     }
+
+
+    /**
+     * onSendToAll
+     *
+     * @param Server $server     server
+     * @param int    $fd         fd
+     * @param int    $reactor_id reactor id
+     * @param array  $data       data
+     */
+    public function onSendToAll($server, $fd, $reactor_id, $data) {
+        if (empty($data['type'])) {
+            throw new Exception('wrong type');
+        }
+
+        $this->sendToAll('sendtoall', $data);
+    }
 }

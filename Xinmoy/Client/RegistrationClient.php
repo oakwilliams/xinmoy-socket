@@ -63,6 +63,21 @@ class RegistrationClient extends AsyncClient {
 
 
     /**
+     * onSendToAll
+     *
+     * @param Client $client client
+     * @param array  $data   data
+     */
+    public function onSendToAll($client, $data) {
+        if (empty($data['type'])) {
+            throw new Exception('wrong type');
+        }
+
+        $this->write('sendtoallbyregister', $data);
+    }
+
+
+    /**
      * onSendToGroupByRegister
      *
      * @param array $data data
@@ -73,5 +88,19 @@ class RegistrationClient extends AsyncClient {
         }
 
         $this->send('sendtogroup', $data);
+    }
+
+
+    /**
+     * onSendToAllByRegister
+     *
+     * @param array $data data
+     */
+    public function onSendToAllByRegister($data) {
+        if (empty($data['type'])) {
+            throw new Exception('wrong type');
+        }
+
+        $this->send('sendtoall', $data);
     }
 }

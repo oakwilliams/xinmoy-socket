@@ -107,6 +107,24 @@ trait Registration {
 
 
     /**
+     * Send to all.
+     *
+     * @param string $type  type
+     * @param array  $data  optional, data
+     */
+    public function sendToAll($type, $data = null) {
+        if (empty($type)) {
+            throw new Exception('wrong type');
+        }
+
+        $this->write('sendtoallbyregister', [
+            'type' => $type,
+            'data' => $data
+        ]);
+    }
+
+
+    /**
      * onSendToGroupByRegister
      *
      * @param array $data data
@@ -121,5 +139,23 @@ trait Registration {
         }
 
         parent::sendToGroup($data['group'], $data['type'], $data['data']);
+    }
+
+
+    /**
+     * onSendToAllByRegister
+     *
+     * @param array $data data
+     */
+    public function onSendToAllByRegister($data) {
+        if (empty($data['type'])) {
+            throw new Exception('wrong type');
+        }
+
+        if (!isset($data['data'])) {
+            $data['data'] = null;
+        }
+
+        parent::sendToAll($data['type'], $data['data']);
     }
 }
