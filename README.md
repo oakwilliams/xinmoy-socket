@@ -30,3 +30,5 @@ class Server extends XinmoyServer {
     "data": null
 }
 ```
+## Documentation
+For more information, please visit [Wiki](https://github.com/oakwilliams/xinmoy-socket/wiki).
