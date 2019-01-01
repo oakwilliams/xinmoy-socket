@@ -6,3 +6,18 @@ Distributed Socket Framework Based on Swoole
 * It supports CURL.
 ## Xinmoy Socket App
 ![](https://github.com/oakwilliams/xinmoy-socket/wiki/Xinmoy%20Socket%20App.jpg)
+## App\Server
+```
+<?php
+namespace App;
+
+
+use Xinmoy\Server\Server as XinmoyServer;
+
+
+class Server extends XinmoyServer {
+    public function onTest($server, $fd, $reactor_id, $data) {
+        $this->send($fd, 'test');
+    }
+}
+```
