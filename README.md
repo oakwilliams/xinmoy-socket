@@ -23,3 +23,10 @@ class Server extends XinmoyServer {
 ```
 ## Xinmoy Socket Protocol
 ![](https://github.com/oakwilliams/xinmoy-socket/wiki/Xinmoy%20Socket%20Protocol.jpg)
+## Test
+```
+{
+    "type": "test",
+    "data": null
+}
+```
