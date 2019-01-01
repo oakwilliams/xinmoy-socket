@@ -1,4 +1,4 @@
-# xinmoy-socket
+# Xinmoy Socket
 Distributed Socket Framework Based on Swoole
 ## Features
 * It supports MySQL master/slave architecture.
@@ -21,3 +21,5 @@ class Server extends XinmoyServer {
     }
 }
 ```
+## Xinmoy Socket Protocol
+![](https://github.com/oakwilliams/xinmoy-socket/wiki/Xinmoy%20Socket%20Protocol.jpg)
