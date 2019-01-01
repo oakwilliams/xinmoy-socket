@@ -13,10 +13,21 @@ namespace App;
 
 
 use Xinmoy\Server\Server as XinmoyServer;
-use Xinmoy\Swoole\Group;
 
 
 /**
  * Server
  */
-class Server extends XinmoyServer { }
+class Server extends XinmoyServer {
+    /**
+     * onTest
+     *
+     * @param Server $server     server
+     * @param int    $fd         fd
+     * @param int    $reactor_id reactor id
+     * @param array  $data       data
+     */
+    public function onTest($server, $fd, $reactor_id, $data) {
+        $this->send($fd, 'test');
+    }
+}
